@@ -1,5 +1,5 @@
 [app]
-title = 管控查询
+title = GKCX
 package.name = pollution_query
 package.domain = org.test
 source.dir = .
@@ -18,3 +18,4 @@ android.accept_sdk_license = True
 [buildozer]
 log_level = 2
 warn_on_root = 0
+android.archs = arm64-v8a
