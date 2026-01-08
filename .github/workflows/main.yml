@@ -7,17 +7,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 1. 设置 Python 环境
+      # 1. 设置 Python 环境 (已修正 python-version 的拼写)
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python_version: '3.11'
+          python-version: '3.11'
 
-      # 2. 安装系统依赖 (针对 Ubuntu 24.04/Noble 进行了兼容性优化)
+      # 2. 安装系统依赖 (适配 Ubuntu 24.04)
       - name: Install System Dependencies
         run: |
           sudo apt update
-          # 去掉了 libtinfo5，改用通用版本或替代库
           sudo apt install -y git zip unzip autoconf libtool pkg-config zlib1g-dev \
           libncurses6 libncursesw6 cmake libffi-dev libssl-dev \
           build-essential python3-setuptools
@@ -27,7 +26,6 @@ jobs:
       # 3. 使用 Buildozer 打包
       - name: Build with Buildozer
         run: |
-          # 这一步会自动下载 Android SDK/NDK
           yes | buildozer -v android debug
         continue-on-error: false
 
