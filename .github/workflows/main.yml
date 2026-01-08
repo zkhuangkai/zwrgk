@@ -7,31 +7,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 1. 设置 Python 环境 (已修正 python-version 的拼写)
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # 2. 安装系统依赖 (适配 Ubuntu 24.04)
+      # 新增：清理磁盘空间，防止编译时空间不足
+      - name: Free Disk Space
+        run: |
+          sudo docker image prune -a -f
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
+
       - name: Install System Dependencies
         run: |
           sudo apt update
           sudo apt install -y git zip unzip autoconf libtool pkg-config zlib1g-dev \
           libncurses6 libncursesw6 cmake libffi-dev libssl-dev \
-          build-essential python3-setuptools
+          build-essential python3-setuptools openjdk-17-jdk
           pip install --upgrade pip
           pip install Cython==0.29.33 buildozer
 
-      # 3. 使用 Buildozer 打包
       - name: Build with Buildozer
         run: |
+          # 明确告诉 buildozer 自动接受协议
           yes | buildozer -v android debug
-        continue-on-error: false
-
-      # 4. 上传生成的 APK
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: pollution-app-apk
-          path: bin/*.apk
