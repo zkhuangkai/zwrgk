@@ -7,14 +7,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Get Date
-        shell: bash
-        run: echo "date=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
-        id: get-date
-
       - name: Build with Buildozer
-        # 换成这个更稳定的 Action 路径
-        uses: Enteee/buildozer-action@v1.2.1
+        # 使用这个由 Open-Source-Action 维护的最新稳定版
+        uses: GearSnd/buildozer-action@v1
         with:
           buildozer_version: master
           python_version: 3.11
@@ -22,5 +17,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: pollution-query-apk-${{ steps.get-date.outputs.date }}
+          name: my-pollution-app
           path: bin/*.apk
